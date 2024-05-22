@@ -14,12 +14,12 @@ import uuid
 
 # auth config
 auth = Blueprint('auth', __name__, static_folder='../static/', template_folder='../templates/')
-policy = PasswordPolicy.from_names(strength=0.67)
+policy = PasswordPolicy.from_names(strength=0.3)
 key = pyotp.random_base32()
 totp = pyotp.TOTP(key,digits=10,interval=600)
 
-SECRET_KEY = token_bytes(16).hex()
-secure_password_salt = token_bytes(16).hex()
+SECRET_KEY = "SUPERSECRETKEY"
+secure_password_salt = "SUPERSECRETKEY"
 oauth = OAuth()
 #Mail config
 mail = Mail()
@@ -52,7 +52,11 @@ def generate_verify_otp(option, otp=None):
 
 @auth.errorhandler(404)
 def page_not_found(e):
-    return render_template('notfounderror.html'), 404
+    return render_template('error404page.html'), 404
+
+@auth.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error500page.html'), 500
 
 #Endpoints 
 @auth.route('/')
@@ -67,12 +71,17 @@ def login():
         user_password = request.form['password']
         
         find_user = Users.query.filter_by(email=user_name).first()
-        if bcrypt.check_password_hash(find_user.password, user_password):
-            session['user'] = find_user.user_id
-            session['type'] = 'normal'
-            login_user(find_user)
-            return redirect(url_for('todo.main_page'))
-        else: return redirect(url_for('auth.login'))
+        try:
+            if bcrypt.check_password_hash(find_user.password, user_password):
+                session['user'] = find_user.user_id
+                session['type'] = 'normal'
+                login_user(find_user)
+                return redirect(url_for('todo.main_page'))
+            elif find_user is None:
+                return redirect(url_for('auth.login'))
+            else: return redirect(url_for('auth.login'))
+        except Exception:
+            return redirect(url_for('auth.login'))
     else:
         return render_template('loginPage.html')
     
@@ -90,7 +99,7 @@ def register():
         elif user_password != user_retype_password:
             flash("Password and retype password are not the same")
             return redirect(url_for('auth.register'))
-        elif strength_pass < 0.67:
+        elif strength_pass < 0.3:
             flash("Password is not strong enough")
             return redirect(url_for('auth.register'))
         else:
@@ -140,7 +149,7 @@ def reset_password(token):
         if new_password != retype_password:
             flash("Password and retype password are not the same")
             return redirect(url_for("auth.reset_password",token=token))
-        elif policy.password(new_password).strength() < 0.67:
+        elif policy.password(new_password).strength() < 0.3:
             flash("Password is not strong enough")
             return redirect(url_for("auth.reset_password",token=token))
         else:
@@ -158,10 +167,10 @@ def reset_password(token):
 
 @auth.route('/google_login')
 def login_google():
-    GOOGLE_CLIENT_ID = "1002415781087-3dcgjtloj7l1slkoltrojkfffjldvr98.apps.googleusercontent.com"
+    GOOGLE_CLIENT_ID = "1002415781087-d1a74175n9vk48ehrir794qghma573qi.apps.googleusercontent.com"
     #os.getenv("OAUTH2_CLIENT_ID")
     #OAUTH2_CLIENT_ID=1002415781087-d1a74175n9vk48ehrir794qghma573qi.apps.googleusercontent.com
-    GOOGLE_CLIENT_SECRET = "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"
+    GOOGLE_CLIENT_SECRET = "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"
     #os.getenv("OAUTH2_CLIENT_SECRET")
     #OAUTH2_CLIENT_SECRET=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
     CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
@@ -198,7 +207,9 @@ def authorize():
         session['user'] = Users.query.filter_by(external_id=user['sub']).first().user_id
         session['type'] = 'google'
         session['token'] = token
-        login_user(Users.query.filter_by(external_id=user['sub']).first())
+        get_user = Users.query.filter_by(external_id=user['sub']).first()
+        print(get_user)
+        login_user(get_user)
         return redirect(url_for('todo.main_page'))
 
     
@@ -247,6 +258,7 @@ def facebook_auth():
             session['token'] = token
             login_user(Users.query.filter_by(external_id=user['id']).first())
             return redirect(url_for('todo.main_page'))
-    except Exception:
+    except Exception as e:
+        print(e)
         return redirect(url_for('auth.login'))
 

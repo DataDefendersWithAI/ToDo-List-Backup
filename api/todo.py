@@ -21,6 +21,12 @@ def datetime_to_string(user_date):
     result = datetime.datetime.strptime(user_date, '%Y-%m-%dT%H:%M')
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
+def expire_task(userdate):
+    result = userdate
+    if result < datetime.datetime.now():
+        return True
+    else:
+        return False
 
 def default_group(group_id,group_title,user_id, color):
     if not Groupss.query.filter_by(group_id=group_id).first():
@@ -38,6 +44,14 @@ def default_tag(tag_id,group_id,tag_title,tag_color,user_id):
     else:
         return
 
+def default_task(task_id,task_title,task_description,tag_id,user_id,deadline,points,isCompleted):
+    if not Tasks.query.filter_by(task_id=task_id, user_id=user_id).first():
+        new_task = Tasks(task_id=task_id, task_title=task_title, task_description=task_description, tag_id=tag_id, user_id=user_id, deadline=deadline, points=points, isCompleted=isCompleted)
+        tododb.session.add(new_task)
+        tododb.session.commit()
+    else:
+        return
+
 #Endpoints
 
 @todo.route('/todo', methods=['GET'])
@@ -45,15 +59,21 @@ def default_tag(tag_id,group_id,tag_title,tag_color,user_id):
 def main_page():
     curr_user = Users.query.get(current_user.get_id())
     if curr_user.isFillForm == False:
-        default_group('gid001',"Do",curr_user.user_id,"#7aa5cf")
-        default_group('gid002',"Delegate",curr_user.user_id,"#63c074")
-        default_group('gid003',"Schedule",curr_user.user_id,"#ac7acf")
-        default_group('gid004',"Delete",curr_user.user_id,"#c5e875")
-        default_tag('tag1','gid001','tag1','#7aa5cf',curr_user.user_id)
-        default_tag('tag2','gid002','tag2','#63c074',curr_user.user_id)
-        default_tag('tag3','gid003','tag3','#ac7acf',curr_user.user_id)
-        default_tag('tag4','gid004','tag4','#c5e875',curr_user.user_id)
-        default_tag('tag5','gid001','tag5','#7aa5cf',curr_user.user_id)
+        g1 = uuid.uuid4().hex
+        g2 = uuid.uuid4().hex
+        g3 = uuid.uuid4().hex
+        g4 = uuid.uuid4().hex
+        t1 = uuid.uuid4().hex
+        default_group(g1,"Do",curr_user.user_id,"#7aa5cf")
+        default_group(g2,"Delegate",curr_user.user_id,"#63c074")
+        default_group(g3,"Schedule",curr_user.user_id,"#ac7acf")
+        default_group(g4,"Delete",curr_user.user_id,"#c5e875")
+        default_tag(t1 ,g1,'Be more organize','#7aa5cf',curr_user.user_id)
+        default_tag(uuid.uuid4(),g2,'This is a tag','#63c074',curr_user.user_id)
+        default_tag(uuid.uuid4(),g3,'You can rename it','#ac7acf',curr_user.user_id)
+        default_tag(uuid.uuid4(),g4,'Change color','#c5e875',curr_user.user_id)
+        default_tag(uuid.uuid4(),g1,'Or delete it','#7aa5cf',curr_user.user_id)
+        default_task(uuid.uuid4(),'Darkmode is availble','Our darkmode is rolling out now!',t1,curr_user.user_id,datetime.datetime.now(),10,False)
         return redirect(url_for('profiles.profile', type=session['type']))
     else:
         return render_template('mainPage.html')
@@ -104,6 +124,14 @@ def get_todo():
 def completed_todo(id):
     task = Tasks.query.filter_by(task_id=id, user_id=current_user.get_id()).first()
     task.isCompleted = True
+    if expire_task(task.deadline) == True:
+        task.points = 0
+    tododb.session.commit()
+    update_points = Users.query.filter_by(user_id=current_user.get_id()).first()
+    if (update_points.points == None):
+        update_points.points = task.points
+    else:
+        update_points.points += task.points
     tododb.session.commit()
     return jsonify({'message': 'Task completed successfully!'}), 200
 
@@ -111,6 +139,7 @@ def completed_todo(id):
 def uncompleted_todo(id):
     task = Tasks.query.filter_by(task_id=id, user_id=current_user.get_id()).first()
     task.isCompleted = False
+    task.points = 0
     tododb.session.commit()
     return jsonify({'message': 'Task uncompleted successfully!'}), 200
 
@@ -121,7 +150,7 @@ def uncompleted_todo(id):
 def create_group():
     data = request.get_json()
     print(data)
-    new_group = Groupss(group_id=data['groupId'], group_title=data['title'], user_id=current_user.get_id(), color=data['color'])
+    new_group = Groupss(group_id=data['groupId'], group_title=data['title'], user_id=current_user.get_id(), color=data['color'] , def_tag = data['def_tag'])
     tododb.session.add(new_group)
     tododb.session.commit()
     return jsonify({'message': 'Group created successfully!'}), 200
@@ -133,6 +162,9 @@ def update_group():
     group = Groupss.query.filter_by(group_id=data['groupId'], user_id=current_user.get_id()).first()
     group.group_title = data['title']
     group.color = data['color']
+    # print("Def_tag bf:"+ group.def_tag)
+    group.def_tag = data['def_tag']
+    # print("Def_tag: " + data['def_tag'])
     tododb.session.commit()
     return jsonify({'message': 'Group updated successfully!'}), 200
 
@@ -151,7 +183,7 @@ def get_groups():
     groups = Groupss.query.filter_by(user_id=current_user.get_id()).all()
     group_list = []
     for group in groups:
-        group_list.append({'groupId': group.group_id, 'title': group.group_title, 'color': group.color})
+        group_list.append({'groupId': group.group_id, 'title': group.group_title, 'color': group.color , 'def_tag':group.def_tag})
     return jsonify(group_list), 200
 
 @todo.route('/todo/tag/create', methods=['POST'])

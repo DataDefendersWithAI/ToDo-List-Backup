@@ -50,9 +50,27 @@ def get_profile():
     json_data = {
         "username": curr_user.name,
         "bio": curr_user.bio,
-        "Location": curr_user.location,
+        "country": curr_user.country,
+        "email": curr_user.email,
+        "isFirstTime": curr_user.isFillForm,
+        "points": curr_user.points,
     }
     return jsonify(json_data), 200
+
+@profiles.route('/profile/get/dark_mode',methods=['GET'])
+@login_required
+def get_dark_mode():
+    curr_user = Users.query.get(current_user.get_id())
+    return jsonify({"dark_mode": curr_user.dark_mode}), 200
+
+@profiles.route('/profile/update/dark_mode',methods=['POST'])
+@login_required
+def update_dark_mode():
+    curr_user = Users.query.get(current_user.get_id())
+    data = request.get_json()
+    curr_user.dark_mode = data['dark_mode']
+    tododb.session.commit()
+    return jsonify({"message":"Dark Mode Updated"}), 200
 
 @profiles.route('/profile/update',methods=['POST'])
 @login_required
@@ -61,10 +79,20 @@ def update_profile():
     data = request.get_json()
     curr_user.name = data['username']
     curr_user.bio = data['bio']
-    curr_user.location = data['Location']
+    curr_user.country = data['country']
     curr_user.isFillForm = True
     tododb.session.commit()
     return jsonify({"message":"Profile Updated"}), 200
+
+@profiles.route('/profile/update_points',methods=['POST'])
+@login_required
+def update_points():
+    curr_user = Users.query.get(current_user.get_id())
+    data = request.get_json()
+    curr_user.points = data['points']
+    tododb.session.commit()
+    return jsonify({"message":"points Updated"}), 200
+
 
 @profiles.route('/profile/update/image',methods=['POST'])
 @login_required
