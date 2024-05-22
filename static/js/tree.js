@@ -694,3 +694,6 @@ window.addEventListener("resize", centerAchievementModal);
 // Call the centerAchievementModal function initially to center the modal
 centerAchievementModal();
 
+}
+
+
