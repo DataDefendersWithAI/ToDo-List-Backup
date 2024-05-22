@@ -6,7 +6,7 @@ from .profile import profiles
 from .team import team
 from .calendar import calendar
 from .gameTree import game
-from .chat import chat, socketio
+
 from flask_login import LoginManager
 from secrets import token_bytes
 from flask_migrate import Migrate
@@ -42,8 +42,7 @@ def create_app():
     ##Mail config
     mail.init_app(app)
 
-    #Chat config
-    socketio.init_app(app, cors_allowed_origins="*")
+
 
     #Blueprints
     app.register_blueprint(auth)
@@ -52,7 +51,7 @@ def create_app():
     app.register_blueprint(team)
     app.register_blueprint(calendar)
     app.register_blueprint(game)
-    app.register_blueprint(chat)
+
 
     # with app.app_context():
     #     tododb.create_all()

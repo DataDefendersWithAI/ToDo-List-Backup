@@ -26,13 +26,24 @@ let coinRewardForNextStageWaterUsed;
 let coinRewardForNextStageFertilizerUsed;
 let coinRewardForNextStageBirdHaveEliminated;
 
-var autoButtontag = document.getElementById('autoButton');
-var audioButtontag = document.getElementById('audioButton');
-var backgroundAudio = document.getElementById('backgroundAudio');
 
-function updateCoinRewardAndMaxThreshold(click, coinRewardForNextStageUsed, numberOfUsed, numberOfMaxUsed) {
+var autoButtontag = document.getElementById("autoButton");
+var audioButtontag = document.getElementById("audioButton");
+var backgroundAudio = document.getElementById("backgroundAudio");
+
+function updateCoinRewardAndMaxThreshold(
+  click,
+  coinRewardForNextStageUsed,
+  numberOfUsed,
+  numberOfMaxUsed
+) {
   let i;
-  for (i = 0; i < progessBarStages.length && numberOfUsed >= progessBarStages[i]; i++) { }
+  for (
+    i = 0;
+    i < progessBarStages.length && numberOfUsed >= progessBarStages[i];
+    i++
+  ) {}
+
   if (i == progessBarStages.length) {
     if (click && coinRewardForNextStageUsed !== "MAX") {
       coins += coinRewardForNextStageUsed;
@@ -56,6 +67,7 @@ function updateCoinRewardAndMaxThreshold(click, coinRewardForNextStageUsed, numb
 
 function updateAllProgressBarsForAchivement(click = false) {
   // Update and assign the returned values back to variables
+
   [coinRewardForNextStageWaterUsed, numberOfWaterUsedMax] = updateCoinRewardAndMaxThreshold(click, coinRewardForNextStageWaterUsed, numberOfWaterUsed, numberOfWaterUsedMax);
   [coinRewardForNextStageBirdHaveEliminated, numberOfBirdHaveEliminatedMax] = updateCoinRewardAndMaxThreshold(click, coinRewardForNextStageBirdHaveEliminated, numberOfBirdHaveEliminated, numberOfBirdHaveEliminatedMax);
   [coinRewardForNextStageTreePlanted, numberOfTreePlantedMax] = updateCoinRewardAndMaxThreshold(click, coinRewardForNextStageTreePlanted, numberOfTreePlanted, numberOfTreePlantedMax);
@@ -84,28 +96,33 @@ function updateCoinRewardForNextStage(coinRewardForNextStageTreePlanted, coinRew
 
 function updateCurrentStageAndMaxStage(currentStageAndMaxStageID, treeStage, maxStage) {
   const currentStageAndMaxStage = document.getElementById(currentStageAndMaxStageID);
+
   currentStageAndMaxStage.innerText = `${treeStage}/${maxStage}`;
 }
 // Function to load data from the server
 function loadData() {
   return new Promise(function (resolve, reject) {
-    fetch('/tree/get', {
-      method: 'GET',
+
+    fetch("/tree/get", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         // You can add any additional headers if required
-      }
+      },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
+
         // Update variables with data received from the server
         resolve(data);
 
         // Now, you can use the updated variables as needed
         // For example, update UI elements with the new data
       })
-      .catch(error => {
-        console.error('Error loading data:', error);
+
+      .catch((error) => {
+        console.error("Error loading data:", error);
+
         // Handle error loading data
         reject(error);
       });
@@ -122,22 +139,27 @@ function sendData() {
     fertilizationsLeft: fertilizationsLeft,
     autoOption: autoOption,
     audioOption: audioOption,
-    coins: coins
+
+    coins: coins,
+    numberOfBirdHaveEliminated: numberOfBirdHaveEliminated,
+    numberOfWaterUsed: numberOfWaterUsed,
+    numberOfFertilizerUsed: numberOfFertilizerUsed,
   };
-  fetch('/tree/update', {
-    method: 'POST',
+  fetch("/tree/update", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       // You can add any additional headers if required
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
-    .then(response => response.json())
-    .then(responseData => {
+    .then((response) => response.json())
+    .then((responseData) => {
       // Handle response from the server if needed
     })
-    .catch(error => {
-      console.error('Error sending data:', error);
+    .catch((error) => {
+      console.error("Error sending data:", error);
+
       // Handle error sending data
     });
 }
@@ -145,12 +167,18 @@ function sendData() {
 function RefreshAll() {
   $.when(loadData()).done((data) => {
     treeStage = data["treeStage"];
-    numberOfTreePlanted = data["numberOfTreePlanted"];
+
     wateringsLeft = data["wateringsLeft"];
     fertilizationsLeft = data["fertilizationsLeft"];
     autoOption = data["autoOption"];
     audioOption = data["audioOption"];
     coins = data["coins"];
+
+    numberOfTreePlanted = data["numberOfTreePlanted"];
+    numberOfBirdHaveEliminated = data["numberOfBirdHaveEliminated"];
+    numberOfWaterUsed = data["numberOfWaterUsed"];
+    numberOfFertilizerUsed = data["numberOfFertilizerUsed"];
+
     // console.log(treeStage);
     // console.log(treeCount);
     // console.log(wateringsLeft);
@@ -159,7 +187,9 @@ function RefreshAll() {
     updateWaterCount();
     updateFertilizerCount();
     updateButtonStates();
-    updateTree(load = true);
+
+    updateTree((load = true));
+
     updateButtonStates();
     updateNumberofTrees();
     updateAutoOption();
@@ -176,17 +206,20 @@ $(document).ready(function () {
   RefreshAll();
 });
 
-//// Refresh fuction 
 
-document.body.addEventListener('click', sendData);
+//// Refresh fuction
+
+//document.body.addEventListener('click', sendData);
 
 function updateCoinsDisplay() {
-  document.getElementById('CoinsOwnNumber').innerText = coins;
-}
+  document.getElementById("CoinsOwnNumber").innerText = coins;
+
 
 function updateAudioOption(click = false) {
   var audioButton = document.getElementById("audioButton");
-  var audioElements = document.querySelectorAll('audio');
+
+  var audioElements = document.querySelectorAll("audio");
+
   if (click) {
     audioOption = !audioOption;
   }
@@ -225,7 +258,8 @@ function updateAutoOption(click = false) {
 function startAuto() {
   // console.log(autoButtontag.src)
   autoInterval = setInterval(autoWaterAndFertilize, 500); // Call autoWaterAndFertilize every second
-  autoButtontag.src = '../static/images/tree_game/AutoButtonLooping.gif';
+  autoButtontag.src = "../static/images/tree_game/AutoButtonLooping.gif";
+
 }
 
 function stopAuto() {
@@ -234,11 +268,9 @@ function stopAuto() {
 }
 
 
-
 function updateNumberofTrees() {
-  document.getElementById(
-    "treeCount"
-  ).innerText = `${numberOfTreePlanted}`
+  document.getElementById("treeCount").innerText = `${numberOfTreePlanted}`;
+
 }
 
 function waterTree() {
@@ -253,7 +285,9 @@ function waterTree() {
     animate("water"); // Call the animation function for watering
     wateringsLeft--; // Decrease the number of remaining waterings
     numberOfWaterUsed++;
-    updateAllProgressBarsForAchivement(click = true);
+
+    updateAllProgressBarsForAchivement((click = true));
+
     updateButtonStates(); // Update button states
     updateWaterCount(); // Update water count display
     wiggleImage("waterbutton"); // Add wiggle animation to water button
@@ -261,9 +295,10 @@ function waterTree() {
     // Play watering audio
     var fertilizingAudio = document.getElementById("wateringAudio");
     fertilizingAudio.play();
+
+    sendData();
   }
 }
-
 
 
 function fertilizeTree() {
@@ -274,7 +309,9 @@ function fertilizeTree() {
     animate("fertilize"); // Call the animation function for fertilizing
     fertilizationsLeft--; // Decrease the number of remaining fertilizations
     numberOfFertilizerUsed++;
-    updateAllProgressBarsForAchivement(click = true);
+
+    updateAllProgressBarsForAchivement((click = true));
+
     updateButtonStates(); // Update button states
     updateFertilizerCount(); // Update fertilizer count display
     wiggleImage("fertilizebutton"); // Add wiggle animation to fertilizer button
@@ -282,6 +319,9 @@ function fertilizeTree() {
     // Play watering audio
     var fertilizingAudio = document.getElementById("fertilizingAudio");
     fertilizingAudio.play();
+
+    sendData();
+
   }
 }
 
@@ -301,7 +341,6 @@ function updateProgressBar(progresBarID, percentageNameID, stage, maxstage) {
   percentage.innerText = `${Math.round(progress)}%`; // Update the percentage display
 }
 
-
 function updateTree(load = false) {
   // Calculate the current stage of the tree
   let stage = Math.floor(treeStage / 20) + 1;
@@ -313,7 +352,11 @@ function updateTree(load = false) {
   // If loading the tree, there will be no weird thing
   if (load) {
     prevSrc = newSrc;
-    document.getElementById("tree").src = `../static/images/tree_game/tree${stage}.png`
+
+    document.getElementById(
+      "tree"
+    ).src = `../static/images/tree_game/tree${stage}.png`;
+
   }
 
   if (prevSrc !== newSrc && !animationInProgress) {
@@ -332,7 +375,11 @@ function updateTree(load = false) {
       // console.log(
       //   `../static/images/tree_game/grown${stage - 1}.gif`
       // );
-      document.getElementById("tree").src = `../static/images/tree_game/grown${stage - 1}.gif`;
+
+      document.getElementById("tree").src = `../static/images/tree_game/grown${
+        stage - 1
+      }.gif`;
+
 
       // Change tree image to the new source
       setTimeout(
@@ -351,10 +398,11 @@ function updateTree(load = false) {
   if (treeStage >= 220) {
     treeStage = 0; // Reset tree stage
     numberOfTreePlanted++; // Increment tree count
-    document.getElementById(
-      "treeCount"
-    ).innerText = `${numberOfTreePlanted}`; // Update tree count
+
+    document.getElementById("treeCount").innerText = `${numberOfTreePlanted}`; // Update tree count
     updateTree();
+    sendData();
+
   }
 }
 
@@ -450,7 +498,6 @@ function updateFertilizerCount() {
   }
 }
 
-
 function autoWaterAndFertilize() {
   // console.log(wateringsLeft, lastAction);
   if (
@@ -468,8 +515,6 @@ function autoWaterAndFertilize() {
     stopAuto(); // Stop auto watering and fertilizing if both water and fertilizer are depleted
   }
 }
-
-
 
 
 /////////////////////////////////////// End Modal for the shop items ///////////////////////////////////////
@@ -524,7 +569,6 @@ centerShopModal();
 /////////////////////////////////////// End Modal for the shop items ///////////////////////////////////////
 
 
-
 /////////////////////////////////////// Start Modal for the helps ///////////////////////////////////////
 // Set the help modal element
 const $helpModalEl = document.getElementById("HelpModal");
@@ -536,11 +580,15 @@ const helpModalOptions = {
   closable: true,
   onHide: () => {
     // console.log("Help modal is hidden");
-    document.getElementById("helpButton").src = "../static/images/tree_game/HelpButton.png";
+
+    document.getElementById("helpButton").src =
+      "../static/images/tree_game/HelpButton.png";
   },
   onShow: () => {
     // console.log("Help modal is shown");
-    document.getElementById("helpButton").src = "../static/images/tree_game/HelpButtonPressed.png";
+    document.getElementById("helpButton").src =
+      "../static/images/tree_game/HelpButtonPressed.png";
+
   },
   onToggle: () => {
     // console.log("Help modal has been toggled");
@@ -576,7 +624,6 @@ window.addEventListener("resize", centerHelpModal);
 centerHelpModal();
 /////////////////////////////////////// End Modal for the help ///////////////////////////////////////
 
-
 /////////////////////////////////////// Start Modal for the achivement ///////////////////////////////////////
 
 // Set the achievement modal element
@@ -589,15 +636,21 @@ const achievementModalOptions = {
   closable: true,
   onHide: () => {
     // console.log("Achievement modal is hidden");
-    document.getElementById("achievementButton").src = "../static/images/tree_game/AchievementButton.png";
+
+    document.getElementById("achievementButton").src =
+      "../static/images/tree_game/AchievementButton.png";
+
     // Add any specific actions you want to perform when the modal is hidden
     // For example, reset any changes made when the modal was open
     // Example: document.getElementById("achievementButton").src = "../static/images/tree_game/AchievementButton.png";
   },
   onShow: () => {
     // console.log("Achievement modal is shown");
-    document.getElementById("achievementButton").src = "../static/images/tree_game/AchievementButtonPressed.png";
-    updateAllProgressBarsForAchivement(click = true);
+
+    document.getElementById("achievementButton").src =
+      "../static/images/tree_game/AchievementButtonPressed.png";
+    updateAllProgressBarsForAchivement((click = true));
+
     // Add any specific actions you want to perform when the modal is shown
     // For example, change the appearance of a button indicating the modal is open
     // Example: document.getElementById("achievementButton").src = "../static/images/tree_game/AchievementButtonPressed.png";
@@ -609,7 +662,12 @@ const achievementModalOptions = {
 };
 
 // Create a new instance of the modal for the achievement modal
-const achievementModal = new Modal($achievementModalEl, achievementModalOptions);
+
+const achievementModal = new Modal(
+  $achievementModalEl,
+  achievementModalOptions
+);
+
 
 // Function to handle closing the achievement modal when the close button is clicked
 document
