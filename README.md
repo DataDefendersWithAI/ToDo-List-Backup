@@ -133,32 +133,40 @@ Use Gunicorn to run your Flask application. Gunicorn is a Python WSGI HTTP Serve
 gunicorn -b 127.0.0.1:5000 app:app
 ```
 
-*Feature Map*
+## Feature Map
 ![Feature Map](feature-map.png)
 
 **All below images update until night 08/05/2024**
 
-*Feature Map - Progress*
+## *Feature Map - Progress*
 ![Feature Map - Progress](feature-map-checked.png)
 
 **All below images update until night 07/05/2024**
 
-*Few screenshot (desktop)*
+### *Few screenshot (desktop)*
+**Main page**
 ![](static/images/demoShot/desktop_mainPage.png)
+**Calendar**
 ![](static/images/demoShot/desktop_calendar.png)
+**Team**
 ![](static/images/demoShot/desktop_team.png)
+**Tree**
 ![](static/images/demoShot/desktop_tree.png)
+**Light mode**
 ![](static/images/demoShot/desktop_mainPageLight.png)
+**Chadbot**
 ![](static/images/demoShot/desktop_chatbot.png)
+**Profile page**
 ![](static/images/demoShot/desktop_profile.png)
+**Landing page**
 ![](static/images/demoShot/desktop_landing.png)
 
-*Few screenshot (mobile)*
+### *Few screenshot (mobile)*
 ...             |  ...
 :-------------------------:|:-------------------------:
-![](static/images/demoShot/mobile_mainPage.png)  |  ![](static/images/demoShot/mobile_calendar.png)
-![](static/images/demoShot/mobile_team.png) | ![](static/images/demoShot/mobile_tree.png)
-![](static/images/demoShot/mobile_mainPageLight.png) | ![](static/images/demoShot/mobile_chatbot.png)
-![](static/images/demoShot/mobile_profile.png)| ![](static/images/demoShot/mobile_landing.png)
+**Main page** ![](static/images/demoShot/mobile_mainPage.png)  |  **Calendar** ![](static/images/demoShot/mobile_calendar.png)
+**Team** ![](static/images/demoShot/mobile_team.png) | **Tree** ![](static/images/demoShot/mobile_tree.png)
+**Light mode** ![](static/images/demoShot/mobile_mainPageLight.png) | **Chadbot** ![](static/images/demoShot/mobile_chatbot.png)
+**Profile page** ![](static/images/demoShot/mobile_profile.png)| **Landing page** ![](static/images/demoShot/mobile_landing.png)
 
 [Timeline (Vietnamese - No implementation date - No update till now)](https://docs.google.com/spreadsheets/d/1MAMZZLN4X1kk-8I4zG77Cs-AGEdnr1_v/edit?usp=sharing&ouid=117486916258965576138&rtpof=true&sd=true)
