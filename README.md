@@ -27,12 +27,6 @@ Integrate AI and tree game
 - KienSD (Hồ Trung Kiên - 22520704)
 - lightunderwolft (Hồ Vĩnh Nhật - 22521013)
 
-## Setup Website - General:
-- Install Python Flask (pip install -r requirements.txt)
-- Install MySQL
-- Setup Flask Migrate
-- Run web app using command: gunicorn -b 127.0.0.1:5000 app:app
-
 # Setup Website - Details
 
 ## Prerequisites
