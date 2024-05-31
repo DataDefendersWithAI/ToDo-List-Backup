@@ -42,6 +42,7 @@ Before you begin, ensure you have the following installed on your machine:
 - Python 3.x
 - MySQL Server
 - pip (Python package installer)
+- Node.js and npm (for Tailwind CSS)
 - virtualenv (optional but recommended for managing project dependencies)
 
 ## Step-by-Step Instructions
@@ -104,7 +105,27 @@ Apply the migration to your database:
 flask db upgrade
 ```
 
-### 6. Run the Web Application
+### 6. Install and Configure Tailwind CSS
+
+#### 6.1 Install Node.js and npm
+
+If you don't have Node.js and npm installed, you can install them from the [official Node.js website](https://nodejs.org/).
+
+#### 6.2 Install Tailwind CSS
+
+Navigate to your project directory and install Tailwind CSS via npm:
+
+```sh
+npm install -D tailwindcss flowbite
+```
+
+#### 6.3 Run Tailwind CSS
+
+```sh
+npm run build
+```
+
+### 7. Run the Web Application
 
 Use Gunicorn to run your Flask application. Gunicorn is a Python WSGI HTTP Server for UNIX that serves your application:
 
