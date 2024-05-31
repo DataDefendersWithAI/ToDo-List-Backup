@@ -1,18 +1,24 @@
 # ToDo-List
-Web Application about Productivity Tracker - aka. ToDo List
-
-Integrate AI and tree game
+**Web Application about Productivity Tracker - aka. ToDo List, integrate AI and tree game**
 
 [Demo Link: https://to-do-list.live](https://to-do-list.live)
 
-## Features:
-- Create-Read-Update-Delete Todo List for personal & team
-- Implement the Eisenhower Matrix for better managing Todo List
-- Calendar for better task visualization like Google Calendar
-- Automatically generate recommendations (create new todo, continue todo, manage list,...), ~~notifications and encouragements~~ using AI
-- Todo Tree (Minigame)
-  + will grow if tasks/missions completed
-  + ~~will wither if there is expired tasks/missions~~
+## Features
+
+### Todo List Management
+- **Create-Read-Update-Delete (CRUD) Functionality**: Manage personal and team todo lists with ease.
+- **Eisenhower Matrix**: Prioritize tasks based on urgency and importance for more effective task management.
+- **Calendar Integration**: Visualize tasks on a calendar similar to Google Calendar for better time management.
+
+### AI Integration
+- **Automatic Recommendations**: Leverage AI to generate intelligent recommendations such as creating new todos, continuing existing tasks, and managing your todo list effectively.
+
+### Todo Tree Minigame
+- **Growth Mechanism**: Your tree will grow as you complete tasks and missions, providing a fun and rewarding way to track your productivity.
+- ~~**Withering Mechanism**~~: The feature to wither the tree due to expired tasks/missions has been removed to maintain a positive and encouraging environment.
+
+### Future Enhancements
+- ~~**Notifications and Encouragements**~~: AI-driven notifications and motivational messages to keep you on track and inspired (planned for future releases).
 
 ## Technologies:
 - Frontend: HTML, TailwindCSS, jQuery + JavaScript
