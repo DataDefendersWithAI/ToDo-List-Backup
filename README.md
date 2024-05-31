@@ -68,7 +68,7 @@ pip install -r requirements.txt
 
 ### 4. Install and Configure MySQL
 
-Follow the instructions in `mysql-tutorial.txt` to install MySQL on your system. You can also refer to the official [MySQL Installation Guide](https://dev.mysql.com/doc/refman/8.0/en/installing.html) for detailed instructions.
+Follow the instructions in [MYSQL_TUTORIAL.md](MYSQL_TUTORIAL.md) to install MySQL on your system.
 
 ### 5. Setup Flask-Migrate
 
