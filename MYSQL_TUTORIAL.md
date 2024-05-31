@@ -288,4 +288,4 @@ try:
 except mysql.connector.Error as error:
     print("Failed to connect to MySQL server:", error)
 ```
-### ChatGPT can make mistakes. Check important info. Low-level tutorial at "mysql-tutorial.txt"
+### ChatGPT can make mistakes. Check important info. Low-level tutorial in "mysql-tutorial.txt"
