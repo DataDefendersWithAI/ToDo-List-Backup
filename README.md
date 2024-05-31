@@ -33,6 +33,29 @@
 - KienSD (Hồ Trung Kiên - 22520704)
 - lightunderwolft (Hồ Vĩnh Nhật - 22521013)
 
+## Dependencies
+
+### Python Packages
+
+- **Authlib**: A comprehensive library for OAuth 1.0, OAuth 2.0, OpenID Connect, and JOSE.
+- **email_validator**: A robust email address validator.
+- **Flask**: A lightweight WSGI web application framework.
+- **Flask_Mail**: A Flask extension for sending email.
+- **mysql-connector-python**: A MySQL database connector for Python.
+- **password_strength**: A library for evaluating the strength of passwords.
+- **gunicorn**: A Python WSGI HTTP Server for UNIX, used for deploying the Flask application.
+- **pyotp**: A library for generating and verifying one-time passwords.
+- **requests**: A simple, yet elegant HTTP library for Python.
+- **Flask-Migrate**: Handles SQLAlchemy database migrations for Flask applications using Alembic.
+- **PyMySQL**: A pure-Python MySQL client library.
+- **flask-Login**: Provides user session management for Flask.
+- **flask-bcrypt**: A Flask extension for bcrypt hashing and checking of passwords.
+- **Flask-SocketIO**: Enables real-time bi-directional communication between clients and the server.
+
+### JavaScript and CSS
+
+- **TailwindCSS**: A utility-first CSS framework for rapidly building custom user interfaces.
+
 # Setup Website - Details
 
 ## Prerequisites
