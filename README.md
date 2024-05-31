@@ -28,6 +28,9 @@ Setup Website - General:
 - Install MySQL
 - Setup Flask Migrate
 - Run web app using command: gunicorn -b 127.0.0.1:5000 app:app
+- Testing account:
+  - Account: listtodo012@gmail.com
+  - Password: Demo@123456789
 
 *Feature Map*
 ![Feature Map](feature-map.png)
