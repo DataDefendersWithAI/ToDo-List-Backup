@@ -288,32 +288,32 @@ $(document).ready(function () {
 
 function updateCoinsDisplay() {
   document.getElementById("CoinsOwnNumber").innerText = coins;
+}
 
-  function updateAudioOption(click = false) {
-    var audioButton = document.getElementById("audioButton");
+function updateAudioOption(click = false) {
+  var audioButton = document.getElementById("audioButton");
 
-    var audioElements = document.querySelectorAll("audio");
+  var audioElements = document.querySelectorAll("audio");
 
-    if (click) {
-      audioOption = !audioOption;
-    }
-    if (audioOption) {
-      audioElements.forEach(function (audio) {
-        // console.log(audio.muted);
-        audio.muted = false;
-        backgroundAudio.play();
-      });
-      audioButtontag.src = "../static/images/tree_game/AudioButton.png";
-      // audioButton.innerText = "Pause Audio";
-    } else {
-      audioElements.forEach(function (audio) {
-        // console.log(audio.muted);
-        audio.muted = true;
-      });
-      // backgroundAudio.pause();
-      audioButtontag.src = "../static/images/tree_game/AudioButtonPressed.png";
-      // audioButton.innerText = "Play Audio";
-    }
+  if (click) {
+    audioOption = !audioOption;
+  }
+  if (audioOption) {
+    audioElements.forEach(function (audio) {
+      // console.log(audio.muted);
+      audio.muted = false;
+      backgroundAudio.play();
+    });
+    audioButtontag.src = "../static/images/tree_game/AudioButton.png";
+    // audioButton.innerText = "Pause Audio";
+  } else {
+    audioElements.forEach(function (audio) {
+      // console.log(audio.muted);
+      audio.muted = true;
+    });
+    // backgroundAudio.pause();
+    audioButtontag.src = "../static/images/tree_game/AudioButtonPressed.png";
+    // audioButton.innerText = "Play Audio";
   }
 }
 
